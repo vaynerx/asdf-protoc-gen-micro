@@ -82,9 +82,8 @@ install () {
       -installsuffix 'static' \
       -o protoc-gen-micro .
 
-    cd $install_path
+    mv protoc-gen-micro $bin_install_path
 
-    mv "${tempdir}/protoc-gen-micro-${version}/protoc-gen-micro" "${bin_install_path}"
     chmod +x "${bin_install_path}/protoc-gen-micro"
   )
   
