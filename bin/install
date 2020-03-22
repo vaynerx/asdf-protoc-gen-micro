@@ -72,13 +72,19 @@ install () {
     curl -sSL $download_url -o "${tempdir}/archive.tar.gz"
 
     tar -C "$tempdir" -zxf "${tempdir}/archive.tar.gz"
+    cd ${tempdir}/protoc-gen-micro-${version}
 
+    GO111MODULE=on\
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64 \
     go build \
       -installsuffix 'static' \
-      -o "${tempdir}/protoc-gen-micro" \
-      "${tempdir}/protoc-gen-micro-${version}/main.go"
+      -o protoc-gen-micro .
 
-    mv "${tempdir}/protoc-gen-micro" "${bin_install_path}"
+    cd $install_path
+
+    mv "${tempdir}/protoc-gen-micro-${version}/protoc-gen-micro" "${bin_install_path}"
     chmod +x "${bin_install_path}/protoc-gen-micro"
   )
   
