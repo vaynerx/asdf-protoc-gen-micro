@@ -26,7 +26,7 @@ get_arch () {
   local arch=""
   
   case "$(uname -m)" in
-    x86_64|amd64) arch="x86_64"; ;;
+    x86_64|amd64) arch="amd64"; ;;
     i686|i386) arch="386"; ;;
     armv6l|armv7l) arch="armv6l"; ;;
     aarch64) arch="arm64"; ;;
@@ -63,6 +63,7 @@ install () {
   local version=$2
   local install_path=$3
   local platform=$(get_platform)
+  local arch=$(get_arch)
   local tempdir=$(create_tempdir $platform)
   local download_url="$(get_download_url $version)"
   local bin_install_path="${install_path}/bin"
@@ -76,8 +77,8 @@ install () {
 
     GO111MODULE=on\
     CGO_ENABLED=0 \
-    GOOS=linux \
-    GOARCH=amd64 \
+    GOOS=$platform \
+    GOARCH=$arch \
     go build \
       -installsuffix 'static' \
       -o protoc-gen-micro .
